@@ -27,22 +27,12 @@
 
 <script>
 import bg from '@/assets/bg_top.png'
+import items from './detail/detail.js'
 export default {
   name: 'Home',
   data () {
     return {
-      items: [
-        { firstRow: '文教体育用品', secondRow: '' },
-        { firstRow: '家用电器', secondRow: '及电器附件' },
-        { firstRow: '电子及信息', secondRow: '技术产品' },
-        { firstRow: '儿童用品', secondRow: '' },
-        { firstRow: '家具及建筑', secondRow: '装饰装修材料' },
-        { firstRow: '服装鞋帽', secondRow: '及家用纺织品' },
-        { firstRow: '交通工具', secondRow: '及相关产品' },
-        { firstRow: '食品', secondRow: '相关产品' },
-        { firstRow: '日用杂品', secondRow: '' },
-        { firstRow: '其他类产品', secondRow: '' }
-      ],
+      items,
       bg,
       width: 375,
       height: 172,
@@ -87,7 +77,7 @@ export default {
       this.$router.push({
         path: '/detail',
         query: {
-          index,
+          index: index + 1,
           firstRow: one.firstRow,
           url: one.url
         }
