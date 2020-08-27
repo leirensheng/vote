@@ -1,0 +1,30 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+html,body{
+  height: 100%;
+}
+
+@font-face{
+  font-family: 'youse';
+  src:url('../assets/font/youse.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: 'oppo';
+  src:url('../assets/font/OPPOSans-B.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face{
+  font-family: 'RubiBoldItalic';
+  src:url('../assets/font/Rubik-BoldItalic.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+// @media sc
