@@ -11,7 +11,7 @@
         </div>
       </div>
       <img
-        :src="url"
+        :src="require(`@/assets/firstCate/${url}`)"
         class="right"
         alt=""
       />
@@ -65,8 +65,8 @@ export default {
     }
   },
   mounted () {
-    const { firstRow, index, url } = this.$route.query
-    const item = items.find((one) => one.firstRow === firstRow)
+    const { index, originIndex } = this.$route.query
+    const item = items[originIndex]
     item.children.forEach((one, i) => {
       one.isChecked = false
       one.url = `assets/secondCate/${item.detailFirstRow || item.firstRow}/${
@@ -75,7 +75,7 @@ export default {
     })
     this.item = item
     this.index = index
-    this.url = url
+    this.url = (item.firstRow === '家具及建筑' ? '5-1' : (Number(originIndex) + 1)) + '.png'
   },
   methods: {
     async submit () {

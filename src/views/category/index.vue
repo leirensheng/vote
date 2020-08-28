@@ -110,11 +110,7 @@ export default {
         path: '/detail',
         query: {
           index: this.getIndex(index + 1),
-          firstRow: one.firstRow,
-          url:
-            one.firstRow === '家具及建筑'
-              ? require('@/assets/firstCate/5-1.png')
-              : one.url
+          originIndex: index
         }
       })
     },
