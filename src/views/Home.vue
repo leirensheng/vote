@@ -1,11 +1,15 @@
 <template>
   <div class="home">
     <div class="top">
-      <img
+      <div class="rotate">
+        <img
         class="gear"
         src="@/assets/home/gear.png"
         alt=""
       >
+       <div class="year">2021</div>
+      </div>
+
       <div class="title-1 title" @click="jump">抽查哪些产品？</div>
     </div>
     <div class="title-wrap">
@@ -25,11 +29,11 @@
       >{{one}}</p>
     </div>
     <div class="bottom">
-      <!-- <img
+      <img
         class="light"
         src="@/assets/home/light.png"
         alt=""
-      > -->
+      >
       <img
         class="bg"
         src="@/assets/home/bottom.png"
@@ -69,12 +73,27 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
+    .rotate{
+      position: relative;
     .gear {
       width: 6.5rem;
       height: 6.5rem;
       transform-origin: 50% 50%;
-      animation: rotate 60s linear infinite;
+      animation: rotate 10s linear infinite;
     }
+    .year{
+      transform: translate(-50%,-50%);
+      left:  50%;
+      top: 50%;
+      z-index: 6;
+      font-size: 1.4rem;
+      font-family: RubiBoldItalic;
+      // top:
+      position: absolute;
+      color:white;
+    }
+    }
+
     .title-1 {
       position: relative;
       top: -0.6rem;
@@ -101,7 +120,7 @@ export default {
       right: 0.7rem;
       width: 2.8rem;
       top: 2.6rem;
-      animation: handChange 5s linear infinite;
+      animation: handChange 2s linear infinite;
     }
   }
 
@@ -135,7 +154,7 @@ export default {
     .light {
       z-index: 2;
       bottom: 6rem;
-      left: 2rem;
+      left: 2.3rem;
       position: absolute;
       width: 60%;
       opacity: 0.1;
