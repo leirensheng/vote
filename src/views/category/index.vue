@@ -1,23 +1,45 @@
 <template>
-  <div
-    class="home"
-  >
-    <img src="@/assets/bg_top.png" alt="" class="xinfeng">
-    <img :style="girlStyle" class="girl" src="@/assets/girl.png" alt="">
-    <div class="title" :style="titleStyle">2021年上海市产品质量监督抽查产品调查问卷</div>
-    <div class="content" :style="contentStyle">
-      <div class="box" :style="boxStyle" v-for="(one,index) in items" :key="one.title"
-      @click="gotoDetail(one,index)"
+  <div class="home">
+    <img
+      src="@/assets/bg_top.png"
+      alt=""
+      class="xinfeng"
+    >
+    <img
+      :style="girlStyle"
+      class="girl"
+      src="@/assets/girl.png"
+      alt=""
+    >
+    <div
+      class="title"
+      :style="titleStyle"
+    >2021年上海市产品质量监督抽查产品调查问卷</div>
+    <div
+      class="content"
+      :style="contentStyle"
+    >
+      <div
+        class="box"
+        :style="boxStyle"
+        v-for="(one,index) in items"
+        :key="one.title"
+        @click="gotoDetail(one,index)"
       >
         <div class="top">
           <div class="cate">
             <div>{{one.firstRow}}</div>
             <div>{{one.secondRow}}</div>
           </div>
-          <div class="index" :style="indexStyle">{{getIndex(index+1)}}</div>
+          <div
+            class="index"
+            :style="indexStyle"
+          >{{getIndex(index+1)}}</div>
         </div>
-        <div class="bottom">
-          <img :src="one.url" alt="" :style="imgStyle">
+        <div
+          class="bottom"
+          :style="{backgroundImage: `url(${one.url})`} "
+        >
         </div>
       </div>
 
@@ -85,7 +107,10 @@ export default {
         query: {
           index: this.getIndex(index + 1),
           firstRow: one.firstRow,
-          url: one.firstRow === '家具及建筑' ? require('@/assets/firstCate/5-1.png') : one.url
+          url:
+            one.firstRow === '家具及建筑'
+              ? require('@/assets/firstCate/5-1.png')
+              : one.url
         }
       })
     },
@@ -156,30 +181,30 @@ export default {
   min-height: 100%;
   position: relative;
   background-size: 100%;
-  background-repeat:no-repeat;
-  background-color:rgb(63, 71, 154);
+  background-repeat: no-repeat;
+  background-color: rgb(63, 71, 154);
   padding-bottom: 10px;
-   .xinfeng{
-     width: 100%;
-   }
-  .girl{
+  .xinfeng {
+    width: 100%;
+  }
+  .girl {
     position: absolute;
     z-index: 2;
   }
-  .title{
+  .title {
     position: absolute;
     color: rgb(226, 128, 148);
     font-family: youse;
   }
-  .content{
+  .content {
     position: relative;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     padding-bottom: 10px !important;
-    border-radius: 0 0 16px 16px;    // position: absolute;
+    border-radius: 0 0 16px 16px; // position: absolute;
     background-color: rgb(83, 95, 207);
-    .box{
+    .box {
       border-radius: 5px;
       background-color: rgb(222, 224, 237);
       border-right: 10px;
@@ -188,43 +213,43 @@ export default {
       padding: 2px 4px 2px 3px;
       display: flex;
       flex-direction: column;
-      .top{
+      .top {
         flex: 0 0;
         position: relative;
-         .cate{
-           font-family: oppo;
-           color:rgb(63, 72, 154);
-          //  font-weight: bold;
-         }
-        .index{
+        .cate {
+          font-family: oppo;
+          color: rgb(63, 72, 154);
+          z-index: 2;
+          position: relative;
+        }
+        .index {
+          z-index: 1;
           position: absolute;
-          right:0;
-          top:0;
+          right: 0;
+          top: 0;
           color: white;
           font-family: RubiBoldItalic;
         }
       }
-      .bottom{
-         flex:1 1;
-         overflow: auto;
-         display: flex;
-         justify-content: center;
-         .img{
-          //  height: 95%;
-          //  background-size: contain;
-        //  background-repeat: no-repeat;
-         }
+      .bottom {
+        flex: 1 1;
+        overflow: auto;
+        display: flex;
+        justify-content: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
       }
     }
-    .desc{
+    .desc {
       width: 65%;
       position: absolute;
-      bottom:  10px;
+      bottom: 10px;
       right: 0;
-      color:white;
+      color: white;
       font-size: 1rem;
       line-height: 1.3rem;
-      .row{
+      .row {
         font-family: oppol;
       }
     }
