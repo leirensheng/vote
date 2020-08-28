@@ -25,11 +25,11 @@
       >{{one}}</p>
     </div>
     <div class="bottom">
-      <img
+      <!-- <img
         class="light"
         src="@/assets/home/light.png"
         alt=""
-      >
+      > -->
       <img
         class="bg"
         src="@/assets/home/bottom.png"

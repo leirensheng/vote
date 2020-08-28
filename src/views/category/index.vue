@@ -58,14 +58,22 @@ import bg from '@/assets/bg_top.png'
 import items from '../detail/detail.js'
 export default {
   name: 'Home',
+  props: {
+    windowWidth: {
+      type: Number,
+      default: 0
+    },
+    windowHeight: {
+      type: Number,
+      default: 0
+    }
+  },
   data () {
     return {
       items,
       bg,
       width: 375,
       height: 172,
-      windowWidth: '',
-      windowHeight: '',
 
       girl: {
         right: 2,
@@ -89,12 +97,8 @@ export default {
       }
     }
   },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.handleResize)
-  },
+
   mounted () {
-    window.addEventListener('resize', this.handleResize)
-    this.handleResize()
     this.items = this.items.map((one, index) => ({
       ...one,
       url: require('@/assets/firstCate/' + (index + 1) + '.png')
@@ -119,10 +123,6 @@ export default {
         return '0' + val
       }
       return val
-    },
-    handleResize () {
-      this.windowWidth = window.innerWidth
-      this.windowHeight = window.innerHeight
     }
   },
   computed: {
