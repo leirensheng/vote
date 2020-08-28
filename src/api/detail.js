@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export function send (data) {
   return request({
-    url: '/excel/fields/list',
+    url: '/vote',
     method: 'post',
     data
   })

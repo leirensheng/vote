@@ -79,8 +79,8 @@ export default {
   },
   methods: {
     async submit () {
-      console.log(this.item.children.filter((one) => one.isChecked))
-      await send()
+      const ids = this.item.children.filter((one) => one.isChecked).map(one => one.id)
+      await send({ categoryIdList: ids })
       this.$notify({ type: 'success', message: '提交成功' })
     }
   }
@@ -97,8 +97,8 @@ $itemHeight: 2.1rem;
   flex-direction: column;
 
   .top {
-    height: 115px;
-    margin-bottom: 10px;
+    height: 8.21rem;
+    margin-bottom: 0.714rem;
     display: flex;
     align-items: center;
     position: relative;
@@ -152,7 +152,7 @@ $itemHeight: 2.1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 12px;
+        margin-bottom: 0.86rem;
         .left {
           width: $itemHeight;
           height: $itemHeight;
@@ -185,7 +185,7 @@ $itemHeight: 2.1rem;
       color: white;
       background-color: rgb(227, 128, 148);
       border-radius: 4px;
-      height: 29px;
+      height: 2rem;
       display: flex;
       justify-content: center;
       align-items: center;

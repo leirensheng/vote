@@ -183,7 +183,7 @@ export default {
   background-size: 100%;
   background-repeat: no-repeat;
   background-color: rgb(63, 71, 154);
-  padding-bottom: 10px;
+  padding-bottom: 0.714rem;
   .xinfeng {
     width: 100%;
   }
@@ -201,7 +201,7 @@ export default {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding-bottom: 10px !important;
+    padding-bottom: 0.714rem !important;
     border-radius: 0 0 16px 16px; // position: absolute;
     background-color: rgb(83, 95, 207);
     .box {
@@ -209,7 +209,7 @@ export default {
       background-color: rgb(222, 224, 237);
       border-right: 10px;
       // width: 32%;
-      margin-top: 6px;
+      margin-top: 0.43rem;
       padding: 2px 4px 2px 3px;
       display: flex;
       flex-direction: column;
