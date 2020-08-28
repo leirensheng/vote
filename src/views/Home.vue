@@ -20,6 +20,12 @@
           <img :src="one.url" alt="" :style="imgStyle">
         </div>
       </div>
+
+      <div class="desc">
+        <div class="row">注：</div>
+        <div class="row">1. 本次投票为多选，如建议其他产品，请给我们留言吧。</div>
+        <div class="row">2. 征集时间截止至2020年X年X日</div>
+      </div>
     </div>
   </div>
 
@@ -41,11 +47,11 @@ export default {
 
       girl: {
         right: 2,
-        top: 109,
-        width: 132
+        top: 105,
+        width: 147
       },
       title: {
-        top: 55,
+        top: 64,
         left: 40,
         width: 324 - 48,
         fontSize: 29
@@ -57,7 +63,7 @@ export default {
         fontSize: 14
       },
       box: {
-        width: 108
+        width: 106
       }
     }
   },
@@ -77,9 +83,9 @@ export default {
       this.$router.push({
         path: '/detail',
         query: {
-          index: index + 1,
+          index: this.getIndex(index + 1),
           firstRow: one.firstRow,
-          url: one.url
+          url: one.firstRow === '家具及建筑' ? require('@/assets/firstCate/5-1.png') : one.url
         }
       })
     },
@@ -126,7 +132,7 @@ export default {
     },
     indexStyle () {
       return {
-        fontSize: this.ratio * 16 + 'px'
+        fontSize: this.ratio * 15.5 + 'px'
       }
     },
     boxStyle () {
@@ -166,11 +172,12 @@ export default {
     font-family: youse;
   }
   .content{
+    position: relative;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
-    padding-bottom: 10px;
-    // position: absolute;
+    padding-bottom: 10px !important;
+    border-radius: 0 0 16px 16px;    // position: absolute;
     background-color: rgb(83, 95, 207);
     .box{
       border-radius: 5px;
@@ -178,7 +185,7 @@ export default {
       border-right: 10px;
       // width: 32%;
       margin-top: 6px;
-      padding: 2px 2px 2px 5px;
+      padding: 2px 4px 2px 3px;
       display: flex;
       flex-direction: column;
       .top{
@@ -207,6 +214,18 @@ export default {
           //  background-size: contain;
         //  background-repeat: no-repeat;
          }
+      }
+    }
+    .desc{
+      width: 65%;
+      position: absolute;
+      bottom:  10px;
+      right: 0;
+      color:white;
+      font-size: 1rem;
+      line-height: 1.3rem;
+      .row{
+        font-family: oppol;
       }
     }
   }

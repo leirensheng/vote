@@ -66,7 +66,7 @@ const items = [
     firstRow: '家具及建筑',
     secondRow: '装饰装修材料',
     detailFirstRow: '家具及',
-    detailSecondRow: '及建筑装饰装修材料',
+    detailSecondRow: '建筑装饰装修材料',
     children: [
       { name: '木质家具' },
       { name: '双层床' },
