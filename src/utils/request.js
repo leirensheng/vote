@@ -22,7 +22,7 @@ instance.interceptors.response.use(
           : res.errmsg
 
       message = message || 'error'
-      if (code !== 1) {
+      if (code !== 0) {
         Notify({
           message: message,
           type: 'danger'

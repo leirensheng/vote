@@ -189,6 +189,7 @@ $itemHeight: 2.1rem;
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 1.2rem;
     }
   }
 }
