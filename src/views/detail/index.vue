@@ -54,6 +54,7 @@
 </template>
 <script>
 import items from './detail'
+import { send } from '@/api/detail'
 export default {
   data () {
     return {
@@ -77,8 +78,10 @@ export default {
     this.url = url
   },
   methods: {
-    submit () {
+    async submit () {
       console.log(this.item.children.filter((one) => one.isChecked))
+      await send()
+      this.$notify({ type: 'success', message: '提交成功' })
     }
   }
 }
@@ -125,7 +128,7 @@ $itemHeight: 2.1rem;
     .right {
       position: absolute;
       right: 0;
-      top: -7px;
+      // top: -7px;
       width: 8.29rem;
       height: 8.29rem;
     }

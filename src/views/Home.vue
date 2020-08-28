@@ -1,232 +1,188 @@
 <template>
-  <div
-    class="home"
-  >
-    <img src="@/assets/bg_top.png" alt="" class="xinfeng">
-    <img :style="girlStyle" class="girl" src="@/assets/girl.png" alt="">
-    <div class="title" :style="titleStyle">2021年上海市产品质量监督抽查产品调查问卷</div>
-    <div class="content" :style="contentStyle">
-      <div class="box" :style="boxStyle" v-for="(one,index) in items" :key="one.title"
-      @click="gotoDetail(one,index)"
+  <div class="home">
+    <div class="top">
+      <img
+        class="gear"
+        src="@/assets/home/gear.png"
+        alt=""
       >
-        <div class="top">
-          <div class="cate">
-            <div>{{one.firstRow}}</div>
-            <div>{{one.secondRow}}</div>
-          </div>
-          <div class="index" :style="indexStyle">{{getIndex(index+1)}}</div>
-        </div>
-        <div class="bottom">
-          <img :src="one.url" alt="" :style="imgStyle">
-        </div>
-      </div>
+      <div class="title-1 title" @click="jump">抽查哪些产品？</div>
+    </div>
+    <div class="title-wrap">
+      <div class="title-2 title"  @click="jump">用你的小手手投票一下</div>
+      <img
+        class="hand"
+        src="@/assets/home/hand.png"
+        alt=""
+        @click="jump"
+      >
 
-      <div class="desc">
-        <div class="row">注：</div>
-        <div class="row">1. 本次投票为多选，如建议其他产品，请给我们留言吧。</div>
-        <div class="row">2. 征集时间截止至2020年X年X日</div>
-      </div>
+    </div>
+    <div class="desc">
+      <p
+        v-for="one in articles"
+        :key="one"
+      >{{one}}</p>
+    </div>
+    <div class="bottom">
+      <img
+        class="light"
+        src="@/assets/home/light.png"
+        alt=""
+      >
+      <img
+        class="bg"
+        src="@/assets/home/bottom.png"
+        alt=""
+      >
     </div>
   </div>
 
 </template>
 
 <script>
-import bg from '@/assets/bg_top.png'
-import items from './detail/detail.js'
 export default {
-  name: 'Home',
+  methods: {
+    jump () {
+      this.$router.push({ name: 'Category' })
+    }
+  },
   data () {
     return {
-      items,
-      bg,
-      width: 375,
-      height: 172,
-      windowWidth: '',
-      windowHeight: '',
-
-      girl: {
-        right: 2,
-        top: 105,
-        width: 147
-      },
-      title: {
-        top: 64,
-        left: 40,
-        width: 324 - 48,
-        fontSize: 29
-      },
-      content: {
-        left: 21,
-        right: 21,
-        top: 190,
-        fontSize: 14
-      },
-      box: {
-        width: 106
-      }
-    }
-  },
-  beforeDestroy () {
-    window.removeEventListener('resize', this.handleResize)
-  },
-  mounted () {
-    window.addEventListener('resize', this.handleResize)
-    this.handleResize()
-    this.items = this.items.map((one, index) => ({
-      ...one,
-      url: require('@/assets/firstCate/' + (index + 1) + '.png')
-    }))
-  },
-  methods: {
-    gotoDetail (one, index) {
-      this.$router.push({
-        path: '/detail',
-        query: {
-          index: this.getIndex(index + 1),
-          firstRow: one.firstRow,
-          url: one.firstRow === '家具及建筑' ? require('@/assets/firstCate/5-1.png') : one.url
-        }
-      })
-    },
-    getIndex (val) {
-      if (val < 10) {
-        return '0' + val
-      }
-      return val
-    },
-    handleResize () {
-      this.windowWidth = window.innerWidth
-      this.windowHeight = window.innerHeight
-    }
-  },
-  computed: {
-    ratio () {
-      return this.windowWidth / this.width
-    },
-    girlStyle () {
-      return {
-        right: this.ratio * this.girl.right + 'px',
-        width: this.girl.width * this.ratio + 'px',
-        top: this.girl.top * this.ratio + 'px'
-      }
-    },
-    titleStyle () {
-      return {
-        left: this.title.left * this.ratio + 'px',
-        right: this.title.left * this.ratio + 'px',
-        fontSize: this.title.fontSize * this.ratio + 'px',
-        lineHeight: this.title.fontSize * this.ratio + 'px',
-        top: this.title.top * this.ratio + 'px'
-      }
-    },
-    contentStyle () {
-      const paddingTop = 24 * this.ratio
-      const paddingLeft = 7 * this.ratio
-      const marginLeft = 13 * this.ratio
-      return {
-        margin: `-4px ${marginLeft}px 0 ${marginLeft}px`,
-        padding: `${paddingTop}px ${paddingLeft}px`,
-        fontSize: this.content.fontSize * this.ratio + 'px'
-      }
-    },
-    indexStyle () {
-      return {
-        fontSize: this.ratio * 15.5 + 'px'
-      }
-    },
-    boxStyle () {
-      return {
-        width: this.box.width * this.ratio + 'px',
-        height: this.box.width * this.ratio + 'px'
-      }
-    },
-    imgStyle () {
-      return {
-        width: this.box.width * 0.7 * this.ratio + 'px',
-        height: '100%'
-      }
+      articles: [
+        '移动电源？电压力锅？手机？笔记本电脑？热水器？儿童服装？这些产品的安全质量如何，能放心使用吗？',
+        '为进一步提高本市产品质量监督抽查工作质量，科学制定2021年上海市产品质量监督抽查计划，上海市市场监督管理局现面向社会公开征集意见和建议。',
+        '您想我们接下来的一年抽查哪些产品呢？请在下列产品列表里勾选您关注的产品种类，感谢您的参与哦！'
+      ]
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .home {
-  width: 100%;
   min-height: 100%;
+  background-color: rgb(62, 71, 154);
   position: relative;
-  background-size: 100%;
-  background-repeat:no-repeat;
-  background-color:rgb(63, 71, 154);
-  padding-bottom: 10px;
-   .xinfeng{
-     width: 100%;
-   }
-  .girl{
-    position: absolute;
-    z-index: 2;
-  }
-  .title{
-    position: absolute;
-    color: rgb(226, 128, 148);
-    font-family: youse;
-  }
-  .content{
-    position: relative;
+  // paddin
+  .top {
+    margin-left: 0.5rem;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
-    padding-bottom: 10px !important;
-    border-radius: 0 0 16px 16px;    // position: absolute;
+    align-items: flex-end;
+    .gear {
+      width: 6.5rem;
+      height: 6.5rem;
+      transform-origin: 50% 50%;
+      animation: rotate 60s linear infinite;
+    }
+    .title-1 {
+      position: relative;
+      top: -0.6rem;
+      font-size: 3rem;
+    }
+  }
+
+  .title {
+    font-family: youse;
+    color: rgb(227, 128, 147);
+    text-shadow: -0.15em 0em 0em black;
+  }
+  .title-wrap {
+    position: relative;
+    top: -10px;
+    .title-2 {
+      position: relative;
+      font-size: 2.6rem;
+      text-align: center;
+    }
+    .hand {
+      z-index: 3;
+      position: absolute;
+      right: 0.7rem;
+      width: 2.8rem;
+      top: 2.6rem;
+      animation: handChange 5s linear infinite;
+    }
+  }
+
+  .desc {
+    position: relative;
+    z-index:2;
     background-color: rgb(83, 95, 207);
-    .box{
-      border-radius: 5px;
-      background-color: rgb(222, 224, 237);
-      border-right: 10px;
-      // width: 32%;
-      margin-top: 6px;
-      padding: 2px 4px 2px 3px;
-      display: flex;
-      flex-direction: column;
-      .top{
-        flex: 0 0;
-        position: relative;
-         .cate{
-           font-family: oppo;
-           color:rgb(63, 72, 154);
-          //  font-weight: bold;
-         }
-        .index{
-          position: absolute;
-          right:0;
-          top:0;
-          color: white;
-          font-family: RubiBoldItalic;
-        }
-      }
-      .bottom{
-         flex:1 1;
-         overflow: auto;
-         display: flex;
-         justify-content: center;
-         .img{
-          //  height: 95%;
-          //  background-size: contain;
-        //  background-repeat: no-repeat;
-         }
+    border-radius: 8px;
+    margin: 5px 1rem 0 1rem;
+    color: white;
+    font-family: oppol;
+    padding: 14px 8px;
+    p {
+      text-indent: 2rem;
+      font-size: 1rem;
+      text-align: justify;
+      margin-bottom: 0.3rem;
+      &:last-child {
+        margin-bottom: 0;
       }
     }
-    .desc{
-      width: 65%;
+  }
+  .bottom {
+    z-index: 1;
+    position: relative;
+    .bg {
+      width: 100%;
+      position: relative;
+      top: -15px;
+    }
+    .light {
+      z-index: 2;
+      bottom: 6rem;
+      left: 2rem;
       position: absolute;
-      bottom:  10px;
-      right: 0;
-      color:white;
-      font-size: 1rem;
-      line-height: 1.3rem;
-      .row{
-        font-family: oppol;
-      }
+      width: 60%;
+      opacity: 0.1;
+      animation: movelight 6s linear infinite;
+    }
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+    @keyframes handChange {
+    0% {
+      transform: scale(1);
+    }
+    44% {
+      transform: scale(1);
+    }
+    47% {
+      transform: scale(1.2);
+    }
+    50% {
+      transform: scale(1);
+    }
+    53% {
+      transform: scale(1.2);
+    }
+    56% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  @keyframes movelight {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(80%);
+    }
+    100% {
+      transform: translateX(0);
     }
   }
 }
