@@ -41,7 +41,7 @@
           :style="{height: row.height,margin: row.margin}"
         >
           <cate-detail
-           v-if="row.height"
+           v-if="row.isRenderDetail"
             :showIndex="detail.showIndex"
           ></cate-detail>
         </div>
@@ -75,7 +75,8 @@ export default {
       items,
       rows: {},
       bg,
-      curDetail: ''
+      curDetailId: '',
+      curShowRow: -1
     }
   },
 
@@ -95,6 +96,7 @@ export default {
         if (!map[cur]) {
           map[cur] = {
             isShowDetail: false,
+            isRenderDetail: false,
             height: 0,
             items: []
           }
@@ -109,10 +111,18 @@ export default {
       return `calc(${rem}rem + 2px)`
     },
     gotoDetail (one, index, rowIndex) {
-      console.log(rowIndex, index)
       const children = one.children
-      const isToClose = this.curDetail === one.id
-      this.curDetail = one.id
+      const isToClose = this.curDetailId === one.id
+      this.rows[rowIndex].isRenderDetail = true
+      const preRenderRow = this.curShowRow
+      this.curShowRow = rowIndex
+      if (preRenderRow !== this.curShowRow) {
+        setTimeout(() => {
+          this.rows[preRenderRow] && (this.rows[preRenderRow].isRenderDetail = false)
+        }, 600)
+      }
+
+      this.curDetailId = one.id
       this.rows.forEach((row, i) => {
         const isCurRow = Number(rowIndex) === i
         row.height = isCurRow && !isToClose ? this.getDetailHeight(children.length) : 0
