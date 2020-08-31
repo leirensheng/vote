@@ -179,6 +179,10 @@ $itemHeight: 2.1rem;
           width: $itemHeight;
           height: $itemHeight;
           border: none;
+          background-color: red;
+          &:checked{
+          background-color: red !important;
+          }
         }
         .right {
           margin-left: 0.6rem;
