@@ -112,7 +112,7 @@ export default {
 $itemHeight: 2.1rem;
 .detail {
   background-color: rgb(217, 219, 242);
-  padding: 0 20px;
+  padding: 0 12px;
   padding-top: 2px;
   display: flex;
   flex-direction: column;
