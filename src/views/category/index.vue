@@ -6,48 +6,53 @@
       class="xinfeng"
     >
     <img
-      :style="girlStyle"
       class="girl"
       src="@/assets/girl.png"
       alt=""
     >
-    <div
-      class="title"
-      :style="titleStyle"
-    >2021年上海市产品质量监督抽查产品调查问卷</div>
-    <div
-      class="content"
-      :style="contentStyle"
-    >
+    <div class="title">2021年上海市产品质量监督抽查产品调查问卷</div>
+    <div class="content">
       <div
-        class="box"
-        :style="boxStyle"
-        v-for="(one,index) in items"
-        :key="one.title"
-        @click="gotoDetail(one,index)"
+        class="box-row"
+        v-for="(row,rowIndex) in rows"
+        :key="rowIndex"
       >
-        <div class="top">
-          <div class="cate">
-            <div>{{one.firstRow}}</div>
-            <div>{{one.secondRow}}</div>
+        <div
+          class="box"
+          v-for="(one,index) in row.items"
+          :key="one.title"
+          @click.stop="gotoDetail(one,index,rowIndex)"
+        >
+          <div class="top">
+            <div class="cate">
+              <div>{{one.firstRow}}</div>
+              <div>{{one.secondRow}}</div>
+            </div>
+            <div class="index">{{getShowIndex(rowIndex,index)}}</div>
           </div>
           <div
-            class="index"
-            :style="indexStyle"
-          >{{getIndex(index+1)}}</div>
+            class="bottom"
+            :style="{backgroundImage: `url(${one.url})`} "
+          >
+          </div>
         </div>
         <div
-          class="bottom"
-          :style="{backgroundImage: `url(${one.url})`} "
+          class="box-detail"
+          :style="{height: row.height,margin: row.margin}"
         >
+          <cate-detail
+           v-show="row.margin"
+            :showIndex="detail.showIndex"
+          ></cate-detail>
         </div>
-      </div>
 
-      <div class="desc">
+          <div class="desc" v-if="rowIndex === rows.length-1">
         <div class="row">注：</div>
         <div class="row">1. 本次投票为多选，如建议其他产品，请给我们留言吧。</div>
         <div class="row">2. 征集时间截止至2020年X年X日</div>
       </div>
+      </div>
+
     </div>
   </div>
 
@@ -55,46 +60,22 @@
 
 <script>
 import bg from '@/assets/bg_top.png'
+import CateDetail from '../detail/index.vue'
 import items from '../detail/detail.js'
 export default {
-  name: 'Home',
-  props: {
-    windowWidth: {
-      type: Number,
-      default: 0
-    },
-    windowHeight: {
-      type: Number,
-      default: 0
-    }
+  name: 'Category',
+  components: {
+    CateDetail
   },
   data () {
     return {
+      isShowDetail: false,
+      detail: {
+        showIndex: '99'
+      },
       items,
-      bg,
-      width: 375,
-      height: 172,
-
-      girl: {
-        right: 2,
-        top: 105,
-        width: 147
-      },
-      title: {
-        top: 64,
-        left: 40,
-        width: 324 - 48,
-        fontSize: 29
-      },
-      content: {
-        left: 21,
-        right: 21,
-        top: 190,
-        fontSize: 14
-      },
-      box: {
-        width: 106
-      }
+      rows: {},
+      bg
     }
   },
 
@@ -103,70 +84,49 @@ export default {
       ...one,
       url: require('@/assets/firstCate/' + (index + 1) + '.png')
     }))
+    this.getRows()
   },
   methods: {
-    gotoDetail (one, index) {
-      this.$router.push({
-        path: '/detail',
-        query: {
-          index: this.getIndex(index + 1),
-          originIndex: index
+    getRows () {
+      const map = []
+      let cur = 0
+      this.items.forEach((one, index) => {
+        cur = Math.floor(index / 3)
+        if (!map[cur]) {
+          map[cur] = {
+            isShowDetail: false,
+            height: 0,
+            items: []
+          }
         }
+        map[cur].items.push(one)
       })
+      this.rows = map
     },
-    getIndex (val) {
+
+    getDetailHeight (length) {
+      const rem = 8.21 + 0.714 + 1.429 + 0.9 + 1.43 + (0.86 + 2.1) * length + 2
+      return `calc(${rem}rem + 2px)`
+    },
+    gotoDetail (one, index, rowIndex) {
+      console.log(rowIndex, index)
+      const children = one.children
+
+      this.rows.forEach((row, i) => {
+        const isCurRow = Number(rowIndex) === i
+        row.height = isCurRow && row.height === 0 ? this.getDetailHeight(children.length) : 0
+        row.margin = row.height ? '1rem 0' : '0'
+      })
+      this.isShowDetail = true
+      this.detail.showIndex = this.getShowIndex(rowIndex, index)
+    },
+
+    getShowIndex (rowIndex, index) {
+      const val = (rowIndex) * 3 + index + 1
       if (val < 10) {
         return '0' + val
       }
-      return val
-    }
-  },
-  computed: {
-    ratio () {
-      return this.windowWidth / this.width
-    },
-    girlStyle () {
-      return {
-        right: this.ratio * this.girl.right + 'px',
-        width: this.girl.width * this.ratio + 'px',
-        top: this.girl.top * this.ratio + 'px'
-      }
-    },
-    titleStyle () {
-      return {
-        left: this.title.left * this.ratio + 'px',
-        right: this.title.left * this.ratio + 'px',
-        fontSize: this.title.fontSize * this.ratio + 'px',
-        lineHeight: this.title.fontSize * this.ratio + 'px',
-        top: this.title.top * this.ratio + 'px'
-      }
-    },
-    contentStyle () {
-      const paddingTop = 24 * this.ratio
-      const paddingLeft = 7 * this.ratio
-      const marginLeft = 13 * this.ratio
-      return {
-        margin: `-4px ${marginLeft}px 0 ${marginLeft}px`,
-        padding: `${paddingTop}px ${paddingLeft}px`,
-        fontSize: this.content.fontSize * this.ratio + 'px'
-      }
-    },
-    indexStyle () {
-      return {
-        fontSize: this.ratio * 15.5 + 'px'
-      }
-    },
-    boxStyle () {
-      return {
-        width: this.box.width * this.ratio + 'px',
-        height: this.box.width * this.ratio + 'px'
-      }
-    },
-    imgStyle () {
-      return {
-        width: this.box.width * 0.7 * this.ratio + 'px',
-        height: '100%'
-      }
+      return String(val)
     }
   }
 }
@@ -185,62 +145,87 @@ export default {
   }
   .girl {
     position: absolute;
+    right: 0.157rem;
+    width: 11rem;
+    top: 7rem;
     z-index: 2;
   }
   .title {
     position: absolute;
     color: rgb(226, 128, 148);
     font-family: youse;
+    left: 2.85rem;
+    right: 2.85rem;
+    font-size: 2.08rem;
+    line-height: 2rem;
+    top: 4.57rem;
   }
   .content {
     position: relative;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
     padding-bottom: 0.714rem !important;
     border-radius: 0 0 16px 16px; // position: absolute;
     background-color: rgb(83, 95, 207);
-    .box {
-      border-radius: 5px;
-      background-color: rgb(222, 224, 237);
-      border-right: 10px;
-      // width: 32%;
-      margin-top: 0.43rem;
-      padding: 2px 4px 2px 3px;
+    margin: -0.29rem 1rem 0;
+    padding: 2rem 0.5rem;
+    font-size: 1rem;
+    .box-row {
+      position: relative;
       display: flex;
-      flex-direction: column;
-      .top {
-        flex: 0 0;
-        position: relative;
-        .cate {
-          font-family: oppo;
-          color: rgb(63, 72, 154);
-          z-index: 2;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .box {
+        border-radius: 5px;
+        background-color: rgb(222, 224, 237);
+        border-right: 10px;
+        // width: 32%;
+        margin-top: 0.43rem;
+        padding: 2px 4px 2px 3px;
+        display: flex;
+        flex-direction: column;
+        width: 7.57rem;
+        height: 7.57rem;
+        .top {
+          flex: 0 0;
           position: relative;
+          .cate {
+            font-family: oppo;
+            color: rgb(63, 72, 154);
+            z-index: 2;
+            position: relative;
+          }
+          .index {
+            font-size: 1.1rem;
+            z-index: 1;
+            position: absolute;
+            right: 0;
+            top: 0;
+            color: white;
+            font-family: RubiBoldItalic;
+          }
         }
-        .index {
-          z-index: 1;
-          position: absolute;
-          right: 0;
-          top: 0;
-          color: white;
-          font-family: RubiBoldItalic;
+        .bottom {
+          flex: 1 1;
+          overflow: auto;
+          display: flex;
+          justify-content: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          background-position: center;
         }
       }
-      .bottom {
-        flex: 1 1;
-        overflow: auto;
-        display: flex;
-        justify-content: center;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center;
+      .box-detail {
+        width: 100%;
+        overflow: hidden;
+        transition: all 0.8s ease-in-out;
+        background: white;
+        height: 0;
       }
     }
+
     .desc {
       width: 65%;
       position: absolute;
-      bottom: 10px;
+      top: 2.57rem;
       right: 0;
       color: white;
       font-size: 1rem;

@@ -2,7 +2,7 @@
   <div class="detail">
     <div class="top">
       <div class="left">
-        <div class="index">{{ index }}</div>
+        <div class="index">{{ showIndex  }}</div>
         <div classs="title">
           <div class="firstRow">{{ item.detailFirstRow || item.firstRow }}</div>
           <div class="secondRow">
@@ -11,7 +11,7 @@
         </div>
       </div>
       <img
-        :src="require(`@/assets/firstCate/${url}`)"
+        :src="url&&require(`@/assets/firstCate/${url}`)"
         class="right"
         alt=""
       />
@@ -36,7 +36,7 @@
           >
             <div class="name">{{ one.name }}</div>
             <img
-              :src="require('@/'+one.url)"
+              :src="one.url && require('@/'+one.url)"
               alt=""
             >
           </label>
@@ -60,23 +60,37 @@ export default {
     return {
       desc: '（本投票栏支持多选 请选择下拉至底部点击投票）',
       item: {},
-      index: 0,
+      items,
+      // index: 0,
       url: ''
     }
   },
-  mounted () {
-    const { index, originIndex } = this.$route.query
-    const item = items[originIndex]
-    item.children.forEach((one, i) => {
-      one.isChecked = false
-      one.url = `assets/secondCate/${item.detailFirstRow || item.firstRow}/${
+  props: {
+    showIndex: {
+      type: String,
+      default: '99'
+    }
+  },
+  computed: {
+    originIndex () {
+      const val = this.showIndex.indexOf('0') === 0 ? this.showIndex.slice(1) : this.showIndex
+      return val - 1
+    }
+  },
+  watch: {
+    showIndex (val) {
+      const item = this.items[this.originIndex]
+      item.children.forEach((one, i) => {
+        one.isChecked = false
+        one.url = `assets/secondCate/${item.detailFirstRow || item.firstRow}/${
         i + 1
       }.png`
-    })
-    this.item = item
-    this.index = index
-    this.url = (item.firstRow === '家具及建筑' ? '5-1' : (Number(originIndex) + 1)) + '.png'
+      })
+      this.item = item
+      this.url = (item.firstRow === '家具及建筑' ? '5-1' : (Number(this.originIndex) + 1)) + '.png'
+    }
   },
+
   methods: {
     async submit () {
       const ids = this.item.children.filter((one) => one.isChecked).map(one => one.id)
@@ -92,7 +106,6 @@ $itemHeight: 2.1rem;
   background-color: rgb(217, 219, 242);
   padding: 0 20px;
   padding-top: 2px;
-  min-height: 100%;
   display: flex;
   flex-direction: column;
 
@@ -127,7 +140,7 @@ $itemHeight: 2.1rem;
     }
     .right {
       position: absolute;
-      right: 0;
+      right: -1rem;
       // top: -7px;
       width: 8.29rem;
       height: 8.29rem;
@@ -136,12 +149,13 @@ $itemHeight: 2.1rem;
   .desc {
     color: rgb(78, 90, 206);
     font-family: oppo;
+    font-size: 0.9rem;
     margin-bottom: 1.429rem;
   }
   .content {
     flex:1;
     overflow: auto;
-    margin-bottom: 20px;
+    margin-bottom: 1.43rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
