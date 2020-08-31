@@ -98,8 +98,8 @@ export default {
     async submit () {
       try {
         const ids = this.item.children.filter((one) => one.isChecked).map(one => one.id)
-        await send({ categoryIdList: ids })
-        this.$notify({ type: 'success', message: '提交成功' })
+        const { msg } = await send({ categoryIdList: ids })
+        this.$notify({ type: 'success', message: msg })
       } catch (e) {
         console.log(e)
       }
@@ -179,10 +179,6 @@ $itemHeight: 2.1rem;
           width: $itemHeight;
           height: $itemHeight;
           border: none;
-          background-color: red;
-          &:checked{
-          background-color: red !important;
-          }
         }
         .right {
           margin-left: 0.6rem;
