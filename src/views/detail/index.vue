@@ -78,16 +78,19 @@ export default {
     }
   },
   watch: {
-    showIndex (val) {
-      const item = this.items[this.originIndex]
-      item.children.forEach((one, i) => {
-        one.isChecked = false
-        one.url = `assets/secondCate/${item.detailFirstRow || item.firstRow}/${
+    showIndex: {
+      immediate: true,
+      handler (val) {
+        const item = this.items[this.originIndex]
+        item.children.forEach((one, i) => {
+          one.isChecked = false
+          one.url = `assets/secondCate/${item.detailFirstRow || item.firstRow}/${
         i + 1
       }.png`
-      })
-      this.item = item
-      this.url = (item.firstRow === '家具及建筑' ? '5-1' : (Number(this.originIndex) + 1)) + '.png'
+        })
+        this.item = item
+        this.url = (item.firstRow === '家具及建筑' ? '5-1' : (Number(this.originIndex) + 1)) + '.png'
+      }
     }
   },
 

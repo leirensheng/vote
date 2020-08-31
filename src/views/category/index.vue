@@ -41,7 +41,7 @@
           :style="{height: row.height,margin: row.margin}"
         >
           <cate-detail
-           v-show="row.margin"
+           v-if="row.height"
             :showIndex="detail.showIndex"
           ></cate-detail>
         </div>
@@ -69,7 +69,6 @@ export default {
   },
   data () {
     return {
-      isShowDetail: false,
       detail: {
         showIndex: '99'
       },
@@ -119,7 +118,6 @@ export default {
         row.height = isCurRow && !isToClose ? this.getDetailHeight(children.length) : 0
         row.margin = row.height ? '1rem 0' : '0'
       })
-      this.isShowDetail = true
       this.detail.showIndex = this.getShowIndex(rowIndex, index)
     },
 
