@@ -96,9 +96,14 @@ export default {
 
   methods: {
     async submit () {
-      const ids = this.item.children.filter((one) => one.isChecked).map(one => one.id)
-      await send({ categoryIdList: ids })
-      this.$notify({ type: 'success', message: '提交成功' })
+      try {
+        const ids = this.item.children.filter((one) => one.isChecked).map(one => one.id)
+        await send({ categoryIdList: ids })
+        this.$notify({ type: 'success', message: '提交成功' })
+      } catch (e) {
+        console.log(e)
+      }
+      this.$emit('close')
     }
   }
 }
