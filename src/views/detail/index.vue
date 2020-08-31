@@ -55,6 +55,7 @@
 <script>
 import items from './detail'
 import { send } from '@/api/detail'
+import { setCacheData } from '@/utils/cache'
 export default {
   data () {
     return {
@@ -100,10 +101,12 @@ export default {
         const ids = this.item.children.filter((one) => one.isChecked).map(one => one.id)
         const { msg } = await send({ categoryIdList: ids })
         this.$notify({ type: 'success', message: msg })
+        setCacheData('id' + this.item.id, true)
+        this.$emit('close', true)
       } catch (e) {
+        this.$emit('close', false)
         console.log(e)
       }
-      this.$emit('close')
     }
   }
 }

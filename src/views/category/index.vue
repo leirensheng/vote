@@ -19,6 +19,7 @@
       >
         <div
           class="box"
+          :class="{'has-vote': hasVote.includes(one.id)}"
           v-for="(one,index) in row.items"
           :key="one.title"
           @click.stop="gotoDetail(one,index,rowIndex)"
@@ -41,17 +42,20 @@
           :style="{height: row.height,margin: row.margin}"
         >
           <cate-detail
-           v-if="row.isRenderDetail"
+            v-if="row.isRenderDetail"
             :showIndex="row.showIndex"
             @close="closeDetail"
           ></cate-detail>
         </div>
 
-          <div class="desc" v-if="rowIndex === rows.length-1">
-        <div class="row">注：</div>
-        <div class="row">1. 本次投票为多选，如建议其他产品，请给我们留言吧。</div>
-        <div class="row">2. 征集时间截止至2020年X年X日</div>
-      </div>
+        <div
+          class="desc"
+          v-if="rowIndex === rows.length-1"
+        >
+          <div class="row">注：</div>
+          <div class="row">1. 本次投票为多选，如建议其他产品，请给我们留言吧。</div>
+          <div class="row">2. 征集时间截止至2020年X年X日</div>
+        </div>
       </div>
 
     </div>
@@ -63,6 +67,8 @@
 import bg from '@/assets/bg_top.png'
 import CateDetail from '../detail/index.vue'
 import items from '../detail/detail.js'
+// import { getCacheData } from '@/utils/cache'
+
 export default {
   name: 'Category',
   components: {
@@ -74,11 +80,13 @@ export default {
       rows: {},
       bg,
       curDetailId: '',
-      curShowRow: -1
+      curShowRow: -1,
+      hasVote: []
     }
   },
 
   mounted () {
+    this.refreshCache()
     this.items = this.items.map((one, index) => ({
       ...one,
       url: require('@/assets/firstCate/' + (index + 1) + '.png')
@@ -86,7 +94,18 @@ export default {
     this.getRows()
   },
   methods: {
-    closeDetail () {
+    refreshCache () {
+      const res = localStorage.getItem('cacheData')
+      if (res) {
+        const cache = JSON.parse(res)
+        console.log(cache)
+        this.hasVote = cache.map((one) => Number(one.replace('id', '')))
+      }
+    },
+    closeDetail (isSuccess) {
+      if (isSuccess) {
+        this.refreshCache()
+      }
       this.curDetailId = -1
       const row = this.curShowRow
       this.rows[row].height = 0
@@ -126,27 +145,33 @@ export default {
         this.closeDetail()
         return
       }
+      if (this.hasVote.includes(one.id)) {
+        return
+      }
       const children = one.children
       this.rows[rowIndex].isRenderDetail = true
       const preRenderRow = this.curShowRow
       this.curShowRow = rowIndex
       if (preRenderRow !== this.curShowRow) {
         setTimeout(() => {
-          this.rows[preRenderRow] && (this.rows[preRenderRow].isRenderDetail = false)
+          this.rows[preRenderRow] &&
+            (this.rows[preRenderRow].isRenderDetail = false)
         }, 600)
       }
 
       this.curDetailId = one.id
       this.rows.forEach((row, i) => {
         const isCurRow = Number(rowIndex) === i
-        row.height = isCurRow && !closeItSelf ? this.getDetailHeight(children.length) : 0
+        row.height =
+          isCurRow && !closeItSelf ? this.getDetailHeight(children.length) : 0
         row.margin = row.height ? '1rem 0' : '0'
-        row.height !== 0 && (row.showIndex = this.getShowIndex(rowIndex, index))
+        row.height !== 0 &&
+          (row.showIndex = this.getShowIndex(rowIndex, index))
       })
     },
 
     getShowIndex (rowIndex, index) {
-      const val = (rowIndex) * 3 + index + 1
+      const val = rowIndex * 3 + index + 1
       if (val < 10) {
         return '0' + val
       }
@@ -235,6 +260,13 @@ export default {
           background-repeat: no-repeat;
           background-size: contain;
           background-position: center;
+        }
+        &.has-vote {
+          cursor: not-allowed;
+          background-color: #d0cccc;
+          .cate {
+            color: grey !important;
+          }
         }
       }
       .box-detail {
