@@ -75,7 +75,8 @@ export default {
       },
       items,
       rows: {},
-      bg
+      bg,
+      curDetail: ''
     }
   },
 
@@ -111,10 +112,11 @@ export default {
     gotoDetail (one, index, rowIndex) {
       console.log(rowIndex, index)
       const children = one.children
-
+      const isToClose = this.curDetail === one.id
+      this.curDetail = one.id
       this.rows.forEach((row, i) => {
         const isCurRow = Number(rowIndex) === i
-        row.height = isCurRow && row.height === 0 ? this.getDetailHeight(children.length) : 0
+        row.height = isCurRow && !isToClose ? this.getDetailHeight(children.length) : 0
         row.margin = row.height ? '1rem 0' : '0'
       })
       this.isShowDetail = true
@@ -216,7 +218,7 @@ export default {
       .box-detail {
         width: 100%;
         overflow: hidden;
-        transition: all 0.8s ease-in-out;
+        transition: all 0.6s ease-in-out;
         background: white;
         height: 0;
       }
