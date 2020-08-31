@@ -11,6 +11,7 @@ module.exports = {
       }
     }
   },
+  publicPath: '/vote',
   configureWebpack: {
     resolve: {
       alias: {

@@ -42,7 +42,7 @@
         >
           <cate-detail
            v-if="row.isRenderDetail"
-            :showIndex="detail.showIndex"
+            :showIndex="row.showIndex"
             @close="closeDetail"
           ></cate-detail>
         </div>
@@ -70,9 +70,6 @@ export default {
   },
   data () {
     return {
-      detail: {
-        showIndex: '99'
-      },
       items,
       rows: {},
       bg,
@@ -108,6 +105,7 @@ export default {
           map[cur] = {
             isShowDetail: false,
             isRenderDetail: false,
+            showIndex: -1,
             height: 0,
             items: []
           }
@@ -142,8 +140,8 @@ export default {
         const isCurRow = Number(rowIndex) === i
         row.height = isCurRow && !closeItSelf ? this.getDetailHeight(children.length) : 0
         row.margin = row.height ? '1rem 0' : '0'
+        row.height !== 0 && (row.showIndex = this.getShowIndex(rowIndex, index))
       })
-      this.detail.showIndex = this.getShowIndex(rowIndex, index)
     },
 
     getShowIndex (rowIndex, index) {
