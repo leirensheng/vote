@@ -91,7 +91,7 @@ export default {
       const row = this.curShowRow
       this.rows[row].height = 0
       this.rows[row].margin = '0'
-      setTimeout(() => {
+      this.timmer = setTimeout(() => {
         this.rows[row].isRenderDetail = false
       }, 600)
       this.curShowRow = -1
@@ -120,6 +120,7 @@ export default {
       return `calc(${rem}rem + 2px)`
     },
     gotoDetail (one, index, rowIndex) {
+      clearTimeout(this.timmer)
       const closeItSelf = this.curDetailId === one.id
       if (closeItSelf) {
         this.closeDetail()
